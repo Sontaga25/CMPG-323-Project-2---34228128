@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Project2_API.Models;
@@ -69,6 +70,21 @@ namespace Project2_API.Controllers
                     throw;
                 }
             }
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateCatergory(Guid id, [FromBody] JsonPatchDocument<Category> cat)
+        {
+            var p = await _context.Category.FindAsync(id);
+
+            //check if the device id exists
+            if (p == null)
+                return NotFound();
+
+            cat.ApplyTo(p);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }

@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Project2_API.Models;
 
 namespace Project2_API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ZonesController : ControllerBase
@@ -69,6 +72,21 @@ namespace Project2_API.Controllers
                     throw;
                 }
             }
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateZonee(Guid id, [FromBody] JsonPatchDocument<Zone> zone)
+        {
+            var p = await _context.Zone.FindAsync(id);
+
+            //check if the device id exists
+            if (p == null)
+                return NotFound();
+
+            zone.ApplyTo(p);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
