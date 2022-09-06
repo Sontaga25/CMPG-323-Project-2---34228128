@@ -34,6 +34,7 @@ namespace Project2_API.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.Property(e => e.CategoryId)

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +9,6 @@ using Project2_API.Models;
 
 namespace Project2_API.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DevicesController : ControllerBase
@@ -43,6 +41,7 @@ namespace Project2_API.Controllers
             return device;
         }
 
+        
         // PUT: api/Devices/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -100,6 +99,8 @@ namespace Project2_API.Controllers
 
             return CreatedAtAction("GetDevice", new { id = device.DeviceId }, device);
         }
+
+
 
         // DELETE: api/Devices/5
         [HttpDelete("{id}")]
