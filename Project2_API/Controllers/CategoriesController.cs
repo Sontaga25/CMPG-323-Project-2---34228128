@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Project2_API.Models;
@@ -40,6 +41,34 @@ namespace Project2_API.Controllers
 
             return category;
         }
+        //Get api/Category/Device
+        [HttpGet("{id}/Devices")]
+        public async Task<ActionResult<IEnumerable<Device>>> GetDevicesBelongingToCategory(Guid id)
+        {
+            if (_context.Device == null)
+            {
+                return NotFound();
+            }
+
+            return await _context.Device.Where(device => device.CategoryId == id).ToListAsync();
+        }
+
+
+        //Get: api/categoy/zone
+        [HttpGet("{id}/ZoneCount")]
+        public async Task<ActionResult<Int64>> GetAssociatedZoneCount(Guid id)
+        {
+            if (_context.Device == null)
+            {
+                return NotFound();
+            }
+
+            return await _context.Device
+                        .Where(device => device.CategoryId == id)
+                        .Select(device => device.ZoneId)
+                        .Distinct()
+                        .CountAsync();
+        }
 
         // PUT: api/Categories/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -69,6 +98,21 @@ namespace Project2_API.Controllers
                     throw;
                 }
             }
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateCatergory(Guid id, [FromBody] JsonPatchDocument<Category> cat)
+        {
+            var p = await _context.Category.FindAsync(id);
+
+            //check if the device id exists
+            if (p == null)
+                return NotFound();
+
+            cat.ApplyTo(p);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
