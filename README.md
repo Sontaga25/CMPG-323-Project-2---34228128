@@ -1,5 +1,7 @@
 # Project2_API
 
+NOTE NOTE NOTE: please mark the api in the apim-Project2point2 thats the updated version i didnt want to delete the api in apim-project2point1 incase something went with the redeployment of the final api.
+
 The below are the the steps on on how to access my api from azure 
 login creditendial;s : 
 34228128@student365.msfed.nwu.ac.za
