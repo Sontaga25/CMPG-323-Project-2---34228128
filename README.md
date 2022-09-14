@@ -41,6 +41,11 @@ Youll notice that not all end points listed that is just because the some of the
 
 
 
+<p>Below are the screenshots of the API manager from Azur:</p>
+<img scr = "Endpoint1.png"></img>
+<img scr = "Endpoint2.png"></img>
+<img scr = "Endpoint3.png"></img>
+
 
 
 
